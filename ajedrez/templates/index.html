@@ -7,8 +7,9 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>dsadfsa</h1>
+    <h1>Checkboard</h1>
     <div class="container">
+        {%for i in range(4):%}
         <div class="row">
             <div class="red"></div>
             <div class="black"></div>
@@ -29,66 +30,7 @@
             <div class="black"></div>
             <div class="red"></div>
         </div>
-        <div class="row">
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-        </div>
-        <div class="row">
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-        </div>
-        <div class="row">
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-        </div>
-        <div class="row">
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-        </div>
-        <div class="row">
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-        </div>
-        <div class="row">
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-            <div class="black"></div>
-            <div class="red"></div>
-        </div>
+        {%endfor%}
     </div>
 </body>
 </html>

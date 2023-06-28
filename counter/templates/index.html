@@ -6,9 +6,15 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/" method="GET">
+    <div class="container">
         <h1>counter</h1>
         <h2>{{session['contador']}} veces</h2>
-    </form>
+        <form action="/increment" method="POST">
+            <button type="submit">Incrementar 2 veces</button>
+        </form>
+        <form action="/destroy_session" method="POST">
+            <button type="submit">Reset</button>
+        </form>
+    </div>
 </body>
 </html>

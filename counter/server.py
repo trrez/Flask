@@ -7,29 +7,27 @@ app.secret_key = 'keep it secret, keep it safe'
 @app.route('/')
 def counter():
     session['secret_key'] = 'keep it secret, keep it safe'
-    session['contador'] = 0
-
-    if 'secret_key' in session:
-        print('la llave existe!')
-        session['contador'] += 1
-    else:
-        print("la llave 'key_name' NO existe")
-        session['contador'] = 0
-
     if 'contador' in session:
         session['contador'] += 1
-        print(session['contador'])
     else:
         session['contador'] = 0
 
-    return render_template('index.html')
+    return render_template('index.html', contador=session['contador'])
 
 
-@app.route('/destroy_session')
+@app.route('/increment', methods=['POST'])
+def increment():
+    if 'contador' in session:
+        session['contador'] += 2
+    else:
+        session['contador'] = 0
+    return redirect('/')
+
+
+@app.route('/destroy_session', methods=['POST'])
 def destroy():
-    session['secret_key'] = 'keep it secret, keep it safe'
-    session.clear()		# borra todas las claves
-    return render_template('index.html')
+    session.clear()  # borra todas las claves en la sesión
+    return redirect('/')
 
 
 if __name__ == '__main__':

@@ -31,3 +31,30 @@ class User:
         """
 
         return connectToMySQL("mydb").query_db(query, data)
+
+    @classmethod
+    def select(cls, data):
+        query = """
+            SELECT * FROM users
+            WHERE id=%(id)s;
+        """
+        result = connectToMySQL("mydb").query_db(query, data)
+        actual_user = User(result[0])
+        return actual_user
+
+    @classmethod
+    def update(cls, data):
+        query = """
+            UPDATE users
+            SET first_name = %(name)s, last_name = %(last_name)s, email = %(email)s
+            WHERE ID = %(id)s;
+        """
+        return connectToMySQL("mydb").query_db(query, data)
+
+    @classmethod
+    def delete(cls, data):
+        query = """
+            DELETE FROM users
+            WHERE ID = %(id)s;
+        """
+        return connectToMySQL("mydb").query_db(query, data)

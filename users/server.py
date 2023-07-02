@@ -26,5 +26,44 @@ def add():
     return redirect("/")
 
 
+@app.route("/select/<int:id>", methods=["GET"])
+def select(id):
+    data = {
+        "id": id
+    }
+    actual_user = User.select(data)
+    return render_template("actual_form.html", actual_user=actual_user)
+
+
+@app.route("/update/<int:id>", methods=["POST"])
+def update(id):
+    data = {
+        "id": id,
+        "name": request.form["name"],
+        "last_name": request.form["last_name"],
+        "email": request.form["email"]
+    }
+    User.update(data)
+    return redirect("/")
+
+
+@app.route("/delete/<int:id>", methods=["POST"])
+def delete(id):
+    data = {
+        "id": id
+    }
+    User.delete(data)
+    return redirect("/")
+
+
+@app.route("/show/<int:id>", methods=["GET"])
+def show(id):
+    data = {
+        "id": id
+    }
+    actual_user = User.select(data)
+    return render_template("show.html", actual_user=actual_user)
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

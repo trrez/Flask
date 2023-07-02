@@ -26,6 +26,9 @@
                 <td>{{item.last_name}}</td>
                 <td>{{item.email}}</td>
                 <td>
+                    <form action="/show/{{item.id}}" method="GET">
+                        <button type="submit">Show</button>
+                    </form>
                     <form action="/delete/{{item.id}}" method="POST">
                         <button type="submit">Delete</button>
                     </form>

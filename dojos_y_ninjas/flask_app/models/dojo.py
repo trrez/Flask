@@ -1,5 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-from flask_app.models.ninja import Ninja
+from flask_app.models import ninja
 
 
 class Dojo:
@@ -33,25 +33,28 @@ class Dojo:
     @classmethod
     def select(cls, data):
         query = """
-            SELECT * 
-            FROM dojos d LEFT JOIN ninjas n
-            ON d.id = n.dojos_id
-            WHERE d.id = %(id)s;
+            SELECT *
+            FROM dojos
+            LEFT JOIN ninjas
+            ON dojos.id = ninjas.dojos_id
+            WHERE dojos.id = %(id)s;
         """
-        result = connectToMySQL("mydb").query_db(query, data)
-        informacion_dojo = Dojo(result[0])
+        results = connectToMySQL('mydb').query_db(query, data)
+        print(results)
+        dojo = cls(results[0])
+        for row in results:
+            ninja_data = {
+                'id': row['ninjas.id'],
+                'nombre': row['ninjas.nombre'],
+                'apellido': row['apellido'],
+                'edad': row['edad'],
+                'created_at': row['ninjas.created_at'],
+                'updated_at': row['ninjas.updated_at'],
+                'dojos_id': row['dojos_id']
+            }
+            dojo.ninjas.append(ninja.Ninja(ninja_data))
 
-        for reglon in result:
-            if reglon['n.nombre'] != None:
-                data_ninja = {
-                    'nombre': reglon['n.nombre'],
-                    'apellido': reglon['apellido'],
-                    'edad': reglon['edad'],
-                    'id': reglon['n.id'],
-                    'dojos_id': reglon['dojos_id'],
-                    'created_at': reglon['n.created_at'],
-                    'updated_at': reglon['n.updated_at']
-                }
-                ninja_actual = Ninja(data_ninja)
-                informacion_dojo.ninjas.append(ninja_actual)
-        return informacion_dojo
+            print(dojo.nombre)
+            print(dojo.ninjas)
+            print(dojo)
+        return dojo

@@ -4,9 +4,9 @@ from flask_app.config.mysqlconnection import connectToMySQL
 class Ninja:
     def __init__(self, data):
         self.id = data['id']
-        self.first_name = data['nombre']
-        self.last_name = data['apellido']
-        self.age = data['edad']
+        self.nombre = data['nombre']
+        self.apellido = data['apellido']
+        self.edad = data['edad']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.dojos_id = data['dojos_id']

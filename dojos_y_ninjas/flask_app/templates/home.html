@@ -2,36 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Dojos and Ninjas</title>
 </head>
 <body>
-    <h1>{{informacion_dojo.nombre}} Ninjas</h1>
-
-    {%if informacion_dojo.ninjas | length > 0: %}
-    <table>
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Edad</th>
-            </tr>
-        </thead>
-        <tbody>
-            {%for ninja in informacion_dojo.ninja:%}
+    <div class="card-body">
+        <h2 class="card-title text-primary">{{dojo.nombre}} Ninjas</h2>
+        <table class="table table-info">
+            <thead>
                 <tr>
-                    <th>{{ninja.nombre}}</th>
-                    <th>{{ninja.apellido}}</th>
-                    <th>{{ninja.edad}}</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Age</th>
                 </tr>
-            {%endfor%}
-        </tbody>
-    </table>
-    {%else:%}
-        <p>Este dojo no tiene ninjas</p>
-    {%endif%}
-    <div>
-        <a href="/">Home</a>
+            </thead>
+
+            <tbody>
+                {% for ninja in dojo.ninjas %}
+                <tr>
+                    <td>{{ ninja.nombre }}</td>
+                    <td>{{ ninja.apellido }}</td>
+                    <td>{{ ninja.edad }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+</div>
+<a href="/" class="text-center mx-auto">Home</a>
 </body>
 </html>

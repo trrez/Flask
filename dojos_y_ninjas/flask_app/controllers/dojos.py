@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect
 from flask_app.models.dojo import Dojo
+from flask_app import app
 
 
 from flask_app import app
@@ -25,6 +26,5 @@ def home(id):
     data = {
         "id": id
     }
-    informacion_dojo = Dojo.select(data)
-    print(informacion_dojo)
-    return render_template("home.html", informacion_dojo=informacion_dojo)
+    dojo = Dojo.select(data)
+    return render_template('home.html', dojo=dojo)

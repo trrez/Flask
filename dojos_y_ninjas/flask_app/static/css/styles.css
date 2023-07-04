@@ -1,0 +1,19 @@
+body{
+    background-color: cadetblue;
+}
+
+.container{
+    display: flex;
+    justify-content: space-around;
+    margin: 50px;
+}
+
+.dojos{
+    display: flex;
+    flex-direction: column;
+    line-height: 1.7em;
+    border: 2px solid black;
+    width: 30vw;
+    padding: 10px;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{informacion_dojo.nombre}} Ninjas</h1>
+
+    {%if informacion_dojo.ninjas | length > 0: %}
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Edad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for ninja in informacion_dojo.ninja:%}
+                <tr>
+                    <th>{{ninja.nombre}}</th>
+                    <th>{{ninja.apellido}}</th>
+                    <th>{{ninja.edad}}</th>
+                </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    {%else:%}
+        <p>Este dojo no tiene ninjas</p>
+    {%endif%}
+    <div>
+        <a href="/">Home</a>
+    </div>
+</body>
+</html>

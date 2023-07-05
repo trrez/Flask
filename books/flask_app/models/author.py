@@ -1,6 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app.models import book
-from flask_app.models import favorite
 
 
 class Author:
@@ -9,7 +8,7 @@ class Author:
         self.name = data['name']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.author_favorites = []
+        self.unfavorited_authors = []
 
     @classmethod
     def new(cls, data):
@@ -32,7 +31,7 @@ class Author:
         return authors
 
     @classmethod
-    def select_author_with_favorite(cls, data):
+    def get_by_id(cls, data):
         query = """
             SELECT *
             FROM authors
@@ -41,16 +40,31 @@ class Author:
             WHERE authors.id = %(id)s;
         """
         results = connectToMySQL('mydb').query_db(query, data)
-        favorites = cls(results[0])
-        for row_from_db in results:
-            favorite_data = {
-                "id": row_from_db["books.id"],
-                "name": row_from_db["name"],
-                "title": row_from_db["title"],
-                "num_of_pages": row_from_db["num_of_pages"],
-                "created_at": row_from_db["created_at"],
-                "updated_at": row_from_db["updated_at"]
+        author = cls(results[0])
+        for row in results:
+            if row['books.id'] == None:
+                break
+            data = {
+                "id": row["books.id"],
+                "title": row["title"],
+                "num_of_pages": row["num_of_pages"],
+                "created_at": row["books.created_at"],
+                "updated_at": row["books.updated_at"]
             }
-            favorites.author_favorites.append(book.Book(favorite_data))
+            author.unfavorited_authors.append(book.Book(data))
 
-        return favorites
+        return author
+
+    @classmethod
+    def add_favorite(cls, data):
+        query = "INSERT INTO favorites (author_id,book_id) VALUES (%(author_id)s,%(book_id)s);"
+        return connectToMySQL('mydb').query_db(query, data)
+
+    @classmethod
+    def unfavorited_authors(cls, data):
+        query = "SELECT * FROM authors WHERE authors.id NOT IN ( SELECT author_id FROM favorites WHERE book_id = %(id)s );"
+        authors = []
+        results = connectToMySQL('mydb').query_db(query, data)
+        for row in results:
+            authors.append(cls(row))
+        return authors

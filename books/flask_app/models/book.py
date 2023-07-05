@@ -9,7 +9,7 @@ class Book:
         self.num_of_pages = data['num_of_pages']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.book_favorite = []
+        self.authors_who_favorited = []
 
     @classmethod
     def new_book(cls, data):
@@ -32,7 +32,7 @@ class Book:
         return books
 
     @classmethod
-    def select_book_with_author_favorite(cls, data):
+    def get_by_id(cls, data):
         query = """
             SELECT *
             FROM books
@@ -41,17 +41,26 @@ class Book:
             WHERE books.id = %(id)s;
         """
         results = connectToMySQL('mydb').query_db(query, data)
-        favorites = cls(results[0])
-        for row_from_db in results:
-            favorite_data = {
-                "id": row_from_db["authors.id"],
-                "title": row_from_db["title"],
-                "num_of_pages": row_from_db["num_of_pages"],
-                "created_at": row_from_db["authors.created_at"],
-                "updated_at": row_from_db["authors.updated_at"]
+        book = cls(results[0])
+        for row in results:
+            if row['authors.id'] == None:
+                break
+            data = {
+                "id": row["authors.id"],
+                "name": row["name"],
+                "created_at": row["authors.created_at"],
+                "updated_at": row["authors.updated_at"]
             }
-            favorites.book_favorite.append(author.Author(favorite_data))
-            print(favorites.id)
-            print(favorites.book_favorite)
+            book.authors_who_favorited.append(author.Author(data))
 
-        return favorites
+        return book
+
+    @classmethod
+    def unfavorited_books(cls, data):
+        query = "SELECT * FROM books WHERE books.id NOT IN ( SELECT book_id FROM favorites WHERE author_id = %(id)s );"
+        results = connectToMySQL('mydb').query_db(query, data)
+        books = []
+        for row in results:
+            books.append(cls(row))
+        print(books)
+        return books

@@ -1,11 +1,10 @@
 from flask_app import app
-from flask import render_template, request, redirect
-from flask_app.models.author import Author
-from flask_app.models.book import Book
-from flask_app.models.favorite import Favorite
+from flask import redirect, render_template, request
+from ..models.author import Author
+from ..models.book import Book
 
 
-@app.route('/', methods=['GET'])
+@app.route('/authors', methods=['GET'])
 def all_authors():
     return render_template('index.html', authors=Author.all())
 
@@ -21,18 +20,14 @@ def fav_author(id):
     data = {
         'id': id
     }
-    book = Book.all_book()
-    author = Author.select_author_with_favorite(data)
-    return render_template('fav_author.html', author=author, book=book)
+    return render_template('fav_author.html', author=Author.get_by_id(data), unfavorited_books=Book.unfavorited_books(data))
 
 
-@app.route('/author/<int:id>/add-favorite', methods=['POST'])
-def add_fav(id):
-
+@app.route('/join/book', methods=['POST'])
+def join_book():
     data = {
-        'author_id': id,
+        'author_id': request.form['author_id'],
         'book_id': request.form['book_id']
     }
-    Favorite.new_favorite(data)
-
-    return redirect('/author/{}'.format(id))
+    Author.add_favorite(data)
+    return redirect(f"/author/{request.form['author_id']}")

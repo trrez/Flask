@@ -7,12 +7,16 @@
     <head>
 </head>
 <body>
+    
     <div class="container">
         <div class="left-side">
             <h1>New Dojo</h1>
             <form action="/new" method="POST">
                 <label for="nombre">Name:</label>
                 <input type="text" name="nombre" id="nombre" >
+                {% for mensaje in get_flashed_messages(category_filter = ['error_name']) %}     
+                <p>{{mensaje}}</p>                  
+                {% endfor %}
                 <button type="submit">Create</button>
             </form>
         </div>

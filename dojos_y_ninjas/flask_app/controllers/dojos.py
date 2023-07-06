@@ -2,7 +2,6 @@ from flask import render_template, request, redirect
 from flask_app.models.dojo import Dojo
 from flask_app import app
 
-
 from flask_app import app
 
 
@@ -17,7 +16,9 @@ def create():
     new_dojo = {
         "nombre": request.form["nombre"]
     }
-    Dojo.create(new_dojo)
+    if Dojo.validated_dojo(new_dojo) == True:
+        Dojo.create(new_dojo)
+        return redirect('/')
     return redirect('/')
 
 

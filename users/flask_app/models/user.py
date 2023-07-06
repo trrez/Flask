@@ -1,4 +1,7 @@
 from flask_app.config.mysqlconnection import connectToMySQL
+import re
+from flask import flash
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 
 class User:
@@ -7,6 +10,7 @@ class User:
         self.first_name = data['first_name']
         self.last_name = data['last_name']
         self.email = data['email']
+        self.passw = data['passw']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
@@ -26,8 +30,8 @@ class User:
     @classmethod
     def add(cls, data):
         query = """
-            INSERT INTO users(first_name, last_name, email, created_at, updated_at)
-            VALUES(%(name)s, %(last_name)s, %(email)s, NOW(), NOW());
+            INSERT INTO users(first_name, last_name, email, passw, created_at, updated_at)
+            VALUES(%(name)s, %(last_name)s, %(email)s, %(passw)s, NOW(), NOW());
         """
 
         return connectToMySQL("mydb").query_db(query, data)
@@ -46,7 +50,7 @@ class User:
     def update(cls, data):
         query = """
             UPDATE users
-            SET first_name = %(name)s, last_name = %(last_name)s, email = %(email)s
+            SET first_name = %(name)s, last_name = %(last_name)s, email = %(email)s, pass = %(pass)s
             WHERE ID = %(id)s;
         """
         return connectToMySQL("mydb").query_db(query, data)
@@ -58,3 +62,11 @@ class User:
             WHERE ID = %(id)s;
         """
         return connectToMySQL("mydb").query_db(query, data)
+
+    @staticmethod
+    def validate_user(data):
+        is_valid = True
+        if not EMAIL_REGEX.match(data['email']):
+            is_valid = False
+            flash('Ingrese un email valido', 'error_mail')
+        return is_valid

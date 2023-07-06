@@ -1,7 +1,9 @@
+from flask_bcrypt import Bcrypt
 from flask import render_template, request, redirect
 
 from flask_app import app
 from flask_app.models.user import User
+bcrypt = Bcrypt(app)
 
 
 @app.route("/")
@@ -17,14 +19,19 @@ def new():
 
 @app.route("/add", methods=["POST"])
 def add():
+    pw_hash = bcrypt.generate_password_hash(request.form['passw'])
+    print(pw_hash)
 
     data = {
         "name": request.form["name"],
         "last_name": request.form["last_name"],
-        "email": request.form["email"]
+        "email": request.form["email"],
+        "passw": pw_hash
     }
-    User.add(data)
-    return redirect("/")
+    if User.validate_user(data) == True:
+        User.add(data)
+        return redirect("/")
+    return redirect('user/new')
 
 
 @app.route("/select/<int:id>", methods=["GET"])
@@ -42,7 +49,7 @@ def update(id):
         "id": id,
         "name": request.form["name"],
         "last_name": request.form["last_name"],
-        "email": request.form["email"]
+        "email": request.form["email"],
     }
     User.update(data)
     return redirect("/")

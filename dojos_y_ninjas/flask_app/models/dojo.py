@@ -1,5 +1,6 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app.models import ninja
+from flask import flash
 
 
 class Dojo:
@@ -58,3 +59,11 @@ class Dojo:
             print(dojo.ninjas)
             print(dojo)
         return dojo
+
+    @staticmethod
+    def validated_dojo(data):
+        is_valid = True
+        if len(data['nombre']) < 3:
+            flash("El nombre debe tener como minimo 3 caracteres.", "error_name")
+            is_valid = False
+        return is_valid

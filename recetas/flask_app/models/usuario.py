@@ -37,6 +37,18 @@ class Usuario:
             return None
         else:
             return Usuario(resultado[0])
+        
+    @classmethod
+    def revistas_usuario(cls):
+        query = """
+            select * from revista.usuarios u
+            join revista.revistas r
+            on r.id_usuario = %(id)s;
+        """
+        resultado = connectToMySQL(BASE_DATOS).query_db(query)
+        print(resultado)
+        return resultado
+        
 
     @staticmethod
     def validar_registro(data, usuario_existe):

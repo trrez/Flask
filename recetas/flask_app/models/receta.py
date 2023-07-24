@@ -84,6 +84,8 @@ class Receta:
         }
         receta.usuario = Usuario(data_usuario)
         return receta
+    
+    
 
     @classmethod
     def obtener_uno(cls, data):
